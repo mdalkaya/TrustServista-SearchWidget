@@ -95,6 +95,6 @@ module.exports = merge(common, {
       filename: 'vendor-bundle1.js',
       minChunks: Infinity
     }),*/
-    new BundleAnalyzer()
+//    new BundleAnalyzer()
   ]
 })
