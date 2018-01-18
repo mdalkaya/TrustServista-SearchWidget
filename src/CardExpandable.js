@@ -1,7 +1,15 @@
 import React from "react";
 import { render } from "react-dom";
 import { CardsContextMenu } from "./CardsContextMenu.js";
-import { Dropdown, Icon, Card, Image, Modal, Button } from "semantic-ui-react";
+import {
+	Dropdown,
+	Icon,
+	Card,
+	Image,
+	Modal,
+	Button,
+	Container
+} from "semantic-ui-react";
 
 export class CardExpandable extends React.Component {
 	constructor(props) {
@@ -9,14 +17,21 @@ export class CardExpandable extends React.Component {
 		this.handleExpand = this.handleExpand.bind(this);
 		this.handleMouseEnter = this.handleMouseEnter.bind(this);
 		this.handleMouseLeave = this.handleMouseLeave.bind(this);
+		this.handleDragStart = this.handleDragStart.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 		this.state = {
 			expanded: false,
-			expandIcon: "chevron down",
+			descriptionCursor: "zoom-in",
 			descriptionWhiteSpace: "nowrap",
 			descriptionOverflow: "hidden",
 			descriptionTextOverflow: "ellipsis",
 			isHovered: "none"
 		};
+	}
+	handleClick(e) {
+		e.preventDefault();
+		console.log(this.props.formattedItem.open_url);
+		window.open(this.props.formattedItem.open_url, "_blank");
 	}
 
 	handleExpand(e) {
@@ -24,7 +39,7 @@ export class CardExpandable extends React.Component {
 		if (this.state.expanded == false) {
 			this.setState({
 				expanded: true,
-				expandIcon: "chevron up",
+				descriptionCursor: "zoom-out",
 				descriptionWhiteSpace: "",
 				descriptionOverflow: "",
 				descriptionTextOverflow: ""
@@ -32,12 +47,15 @@ export class CardExpandable extends React.Component {
 		} else {
 			this.setState({
 				expanded: false,
-				expandIcon: "chevron down",
+				descriptionCursor: "zoom-in",
 				descriptionWhiteSpace: "nowrap",
 				descriptionOverflow: "hidden",
 				descriptionTextOverflow: "ellipsis"
 			});
 		}
+	}
+	handleDragStart(e) {
+		e.dataTransfer.setData("text/plain", this.props.dragAndDropString);
 	}
 
 	handleMouseEnter(e) {
@@ -52,52 +70,65 @@ export class CardExpandable extends React.Component {
 	}
 
 	render() {
-		let itemImage = null;
-		let mediaTag = null;
-
+	
+		let thumbnail = null;
+		let mediaNode = null;
+		let iconNode = null;
+		if (this.props.iconName != "") {
+			iconNode = (
+				<Icon name={this.props.iconName} color={this.props.iconColor} />
+			);
+		}
 		if (this.props.mediaType == "image") {
-			itemImage = (
+			thumbnail = (
 				<Image
 					style={{
 						cursor: "zoom-in"
 					}}
 					floated="left"
-					src={this.props.image}
+					src={this.props.thumbnail}
 					size="tiny"
 				/>
 			);
-			mediaTag = <Image src={this.props.image} />;
+			mediaNode = <Image centered src={this.props.highres} />;
 		}
 
 		if (this.props.mediaType == "video") {
-			if (this.props.image == null) {
-				itemImage = <Button floated="left" content="Play" icon="play" />;
+			if (this.props.thumbnail == null) {
+				thumbnail = <Icon link size="big" name="play circle" />;
 			} else {
-				itemImage = (
-					<Image
-						src={this.props.image}
-						size="tiny"
-						floated="left"
-						style={{
-							textAlign: "center",
-							cursor: "zoom-in"
-						}}
-					/>
+				thumbnail = (
+					<Image floated="left" size="tiny" onClick={e => e.preventDefault()}>
+						<Image src={this.props.thumbnail} />
+						<Icon
+							style={{
+								position: "absolute",
+								top: "50%",
+								left: "50%",
+								transform: "translate(-50%, -50%)"
+							}}
+							inverted
+							size="big"
+							color=""
+							name="play circle"
+						/>
+					</Image>
 				);
 			}
 
-			mediaTag = (
+			mediaNode = (
 				<video width="100%" autoPlay controls>
-					<source src={this.props.video} type="video/mp4" />
+					<source src={this.props.highres} type="video/mp4" />
 					Your browser does not support HTML5 video.
 				</video>
 			);
 		}
 		if (this.props.mediaType == "audio") {
-			itemImage = <Button floated="left" content="Play" icon="play" />;
-			mediaTag = (
-				<audio width="100%" autoPlay controls>
-					<source src={this.props.audio} type="audio/mp3" />
+			//thumbnail = <Button floated="left" content="Play" icon="play" />;
+			thumbnail = <Icon link size="big" name="volume up" />;
+			mediaNode = (
+				<audio style={{ width: "100%" }} autoPlay controls>
+					<source src={this.props.highres} type="audio/mp3" />
 					Your browser does not support HTML5 audio.
 				</audio>
 			);
@@ -109,26 +140,27 @@ export class CardExpandable extends React.Component {
 				color=""
 				centered
 				draggable="true"
-				ondragstart="drag(event)"
+				onDragStart={this.handleDragStart}
 				onMouseEnter={this.handleMouseEnter}
 				onMouseLeave={this.handleMouseLeave}
-				style={{ margin: "4px" }}
+				style={{ margin: "0px" }}
 				{...this.props}>
 				<Card.Content>
-					<Modal closeIcon="close" trigger={itemImage} size="small">
+					<Modal closeIcon="close" trigger={thumbnail} size="small">
 						<Modal.Header>{this.props.title}</Modal.Header>
-						<Modal.Content scrolling>
-							{mediaTag} {this.props.description}
-						</Modal.Content>
+						<Modal.Content>{mediaNode}</Modal.Content>
 					</Modal>
-					<CardsContextMenu />
-					<Icon name={this.props.iconName} color={this.props.iconColor} />
-					<strong>{this.props.title}</strong>
-					<Card.Meta>{this.props.meta}</Card.Meta>
+					<CardsContextMenu
+						formattedItem={this.props.formattedItem}
+						rawItem={this.props.rawItem}
+					/>
+					{iconNode}
+					<strong onClick={this.handleClick}>{this.props.title}</strong>
+					<Card.Meta dangerouslySetInnerHTML={{ __html: this.props.meta }} />
 					<Card.Description
 						onClick={this.handleExpand}
 						style={{
-              cursor: "zoom-in",
+							cursor: this.state.descriptionCursor,
 							whiteSpace: this.state.descriptionWhiteSpace,
 							overflow: this.state.descriptionOverflow,
 							textOverflow: this.state.descriptionTextOverflow,
