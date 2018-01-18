@@ -1,13 +1,12 @@
 import TimeAgo from "javascript-time-ago";
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
-const config = require('getconfig');
 
 
 
 export function execute_fetch(query, page) {
 	var tokenpromise = new Promise(function(resolve, reject) {
-console.log(config.myProjectSetting);
+
 
 		var user = "annova";
 		var password = "Medox124";
