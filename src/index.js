@@ -99,79 +99,33 @@ class WidgetWithCards extends React.Component {
 
 		execute_fetch(this.state.query, this.state.page_to_fetch).then(
 			function(data) {
+			
 				this.setState({
-					resultCount: data.count + " result(s)"
+					resultCount: data.resultCount + " result(s)"
 				});
 
 				var previousCard = this.state.allCards;
 
 				var cardsHTML = (
-					<Card.Group unstackable divided>
+					<Card.Group unstackable={true} divided={true}>
 						{this.state.loadingresults ? (
-							data.contentItems.map(item => (
+							data.items.map(item => (
 								<CardExpandable
-								fluid
+									fluid
 									key={item._id}
-									itemJSON={item}
-									iconName="image"
-									iconColor=""
-									iconName={
-										item.hasOwnProperty("images") ? (
-											"image"
-										) : item.hasOwnProperty("videos") ? (
-											"film"
-										) : (
-													"volume up"
-												)
-									}
-									mediaType={
-										item.hasOwnProperty("images") ? (
-											"image"
-										) : item.hasOwnProperty("videos") ? (
-											"video"
-										) : (
-											"audio"
-										)
-									}
-									image={
-										item.hasOwnProperty("images") ? (
-											item.images[0].variants[0].url
-										) : null
-									}
-									video={
-										item.hasOwnProperty("videos") ? (
-											item.videos[0].variants[0].url
-										) : null
-									}
-									audio={
-										item.hasOwnProperty("audios") ? (
-											item.audios[0].variants[1].url
-										) : null
-									}
-									description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
-									title={item.mainTitle}
-									//href={item.audios[0].variants[0].url}
-									DRAG_AND_DROP_STRING={
-										"<mos><mosID>DIRA.DEMO.AUDIO.MOS</mosID>" +
-										"<objID>" +
-										item._id +
-										"</objID>" +
-										"<objSlug>" +
-										item.mainTitle +
-										"</objSlug>" +
-										"<objTB>48000</objTB> <objDur>497664</objDur>" +
-										"<mosAbstract>" +
-										item.mainType.displayName +
-										"</mosAbstract></mos>"
-									}
-									target="_blank"
-									meta={
-										<span>
-											{item.mainType.displayName}
-											&nbsp; &middot; &nbsp;
-											<TimeAgo date={item.creaTime} />
-										</span>
-									}
+									formattedItem={item}
+									rawItem={item.rawItem}
+									iconName={item.iconName}
+									iconColor={item.iconColor}
+									mediaType={item.mediaType}
+									thumbnail={item.thumbnail}
+									highres={item.highres}
+									description={item.description}
+									title={item.title}
+									open_url={item.open_url}
+									dragAndDropString={item.dragAndDropString}
+									target={item.target}
+									meta={item.meta}
 								/>
 							))
 						) : (
