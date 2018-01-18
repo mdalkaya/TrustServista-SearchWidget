@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/mdalkaya/NBSearchWidget-Boilerplate#readme",
   "dependencies": {
+    "javascript-time-ago": "^1.0.21",
     "lodash": "^4.17.4",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
