@@ -25,10 +25,10 @@ export class CardsContextMenu extends React.Component {
 
   handleDownload(e) {
     alert("no function defined for Download...")
-    console.log(this.props.itemJSON);
+    console.log(this.props.rawItem);
   }
 
-  handleSendToOpenMedia() {
+  handleSendToOpenMedia(e) {
     var WpLib = OMWebPluginLib;
     var builder = WpLib.OMPlugin.SamePageBuilder.create();
     var config = builder.getPluginConfig();
@@ -41,8 +41,8 @@ export class CardsContextMenu extends React.Component {
     var systemId = null;
     var fields = [
 // Now time to set fields
-    WpLib.OMApi.stringField("BLA BLA", 8),
-    WpLib.OMApi.stringField("WOW", 14),
+    WpLib.OMApi.stringField(this.props.rawItem.mainTitle, 8),
+    WpLib.OMApi.stringField(this.props.formattedItem.description, 14),
     WpLib.OMApi.stringField(null, 15),
           WpLib.OMApi.intField(1, 5068) //value, field id
       ];

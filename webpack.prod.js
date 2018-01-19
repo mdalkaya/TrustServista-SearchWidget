@@ -125,8 +125,8 @@ module.exports = merge(common, {
    "react-dom": "ReactDOM",
    "lodash": "_",
    'semantic-ui-react': 'semanticUIReact',
-//   "react-scrollable-anchor": "ScrollableAnchor",
-//   "react-timeago": "TimeAgo"
+   "javascript-time-ago": "TimeAgo"
+ 
   },
   plugins: [
  /*   new UglifyJSPlugin({

@@ -69,7 +69,14 @@ module.exports = merge(common, {
         // JSon file handling
         // * Enables you to 'require'/'import' json files from your JS files
         {	test: /\.json$/, loader: 'json-loader' },
-     { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader',
+          query: {
+            presets: ['es2015'],
+          }
+        },
        { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ }
       ]
     
@@ -107,9 +114,9 @@ module.exports = merge(common, {
   devServer: {
     host: "0.0.0.0",
     port: 3000,
-
-   hot: true,
+    hot: true,
     inline: true,
+    disableHostCheck: true
 
   /* proxy: {
             "**": { // proxy all
