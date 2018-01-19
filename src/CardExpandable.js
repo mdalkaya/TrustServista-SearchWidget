@@ -153,6 +153,7 @@ export class CardExpandable extends React.Component {
 					<CardsContextMenu
 						formattedItem={this.props.formattedItem}
 						rawItem={this.props.rawItem}
+					
 					/>
 					{iconNode}
 					<strong onClick={this.handleClick}>{this.props.title}</strong>

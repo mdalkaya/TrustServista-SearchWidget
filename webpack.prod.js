@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 var BundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var nodeExternals = require('webpack-node-externals');
 var isProduction = process.env.NODE_ENV === 'production';
@@ -145,6 +146,11 @@ module.exports = merge(common, {
     new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
            }),
+    new CopyWebpackPlugin([
+          
+            // Copy OMWebPluginLib / Client-side SDK libs contents to {output}/
+            { from: './src/lib/OMWebPluginLib', to: 'OMWebPluginLib' }
+    ]),
     new BundleAnalyzer()
   ]
 })

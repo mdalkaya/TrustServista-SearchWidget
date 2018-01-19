@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 var BundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var nodeExternals = require('webpack-node-externals');
 var isProduction = process.env.NODE_ENV === 'production';
@@ -89,6 +90,11 @@ module.exports = merge(common, {
       filename: 'index.html',
       template: './index.dev.html'
     }),
+    new CopyWebpackPlugin([
+          
+      // Copy OMWebPluginLib / Client-side SDK libs contents to {output}/
+      { from: './src/lib/OMWebPluginLib', to: 'OMWebPluginLib' }
+])
  /*   new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor-bundle1',
       chunks: ['bundle1'],
@@ -96,5 +102,20 @@ module.exports = merge(common, {
       minChunks: Infinity
     }),*/
 //    new BundleAnalyzer()
-  ]
+  ],
+  
+  devServer: {
+    host: "0.0.0.0",
+    port: 3000,
+
+   hot: true,
+    inline: true,
+
+  /* proxy: {
+            "**": { // proxy all
+                target: "http://localhost:8000", // our back-end api
+                secure: false
+            }
+   }*/
+  }
 })
