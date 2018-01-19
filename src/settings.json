@@ -1,0 +1,9 @@
+{
+    "fetch": {
+        "url": "https://demo.medox.scisys.de:8443/dira6/auth/v10/login",
+        "username": "annova",
+        "password": "Medox124"
+       
+    }
+}
+

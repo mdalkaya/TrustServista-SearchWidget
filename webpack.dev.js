@@ -1,6 +1,7 @@
 const webpack = require('webpack');
-const path = require('path');
-const fs = require('fs');
+var fs = require('fs')
+var path = require('path')
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 var BundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -38,7 +39,7 @@ module.exports = merge(common, {
     filename: '[name].js'    
   },
   module: {
-    rules: [
+       rules: [
       { test: /\.js$/,  
         exclude: path.resolve(__dirname, "node_modules"),
         loader: 'babel-loader'
@@ -68,7 +69,7 @@ module.exports = merge(common, {
   
         // JSon file handling
         // * Enables you to 'require'/'import' json files from your JS files
-        {	test: /\.json$/, loader: 'json-loader' },
+     //   {	test: /\.json$/, loader: 'json-loader' },
         {
           test: /\.js$/,
           exclude: /node_modules/,
@@ -84,6 +85,8 @@ module.exports = merge(common, {
   },
 
   externals: {
+//    fs:    "commonjs fs",
+//    path:  "commonjs path",
 
    "react": "React",
    "react-dom": "ReactDOM",
@@ -91,6 +94,7 @@ module.exports = merge(common, {
    'semantic-ui-react': 'semanticUIReact',
 
   },
+ 
   plugins: [
    
 		new HtmlWebpackPlugin({  // Also generate a test.html
@@ -111,12 +115,12 @@ module.exports = merge(common, {
 //    new BundleAnalyzer()
   ],
   
+  
   devServer: {
     host: "0.0.0.0",
     port: 3000,
     hot: true,
-    inline: true,
-    disableHostCheck: true
+    inline: true
 
   /* proxy: {
             "**": { // proxy all

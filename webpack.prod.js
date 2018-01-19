@@ -31,12 +31,7 @@ function getEntries (){
 
 module.exports = merge(common, {
   
-/* target: 'node', // in order to ignore built-in modules like path, fs, etc. 
-  externals: [nodeExternals({
-    // this WILL include `react` and `react-dom` in the bundle *` 
-    whitelist: [],
-    importType: 'commonjs'
-})],*/ // in order to ignore all modules in node_modules folder 
+
   devtool: 'source-map',
   resolve: {
     // Make sure, Webpack finds import'ed and require'd files specified without extension
@@ -44,7 +39,6 @@ module.exports = merge(common, {
     extensions: [ '.js', '.jsx']
   },
 //  entry : getEntries,
-
  entry: {
 //   'vendor': [ 'babel-polyfill'],
     'app': [
@@ -96,7 +90,7 @@ module.exports = merge(common, {
   
         // JSon file handling
         // * Enables you to 'require'/'import' json files from your JS files
-        {	test: /\.json$/, loader: 'json-loader' },
+     //   {	test: /\.json$/, loader: 'json-loader' },
         {
           test: /\.js$/,
           exclude: /node_modules/,
@@ -125,7 +119,7 @@ module.exports = merge(common, {
    "react-dom": "ReactDOM",
    "lodash": "_",
    'semantic-ui-react': 'semanticUIReact',
-   "javascript-time-ago": "TimeAgo"
+  // "javascript-time-ago": "TimeAgo"
  
   },
   plugins: [
@@ -149,7 +143,8 @@ module.exports = merge(common, {
     new CopyWebpackPlugin([
           
             // Copy OMWebPluginLib / Client-side SDK libs contents to {output}/
-            { from: './src/lib/OMWebPluginLib', to: 'OMWebPluginLib' }
+            { from: './src/lib/OMWebPluginLib', to: 'OMWebPluginLib' },
+            { from: './src/settings.json' }
     ]),
     new BundleAnalyzer()
   ]

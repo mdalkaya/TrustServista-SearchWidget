@@ -1,9 +1,11 @@
 import React from "react";
 import { execute_fetch } from "./fetch.js";
+
 import { CardExpandable } from "./CardExpandable.js";
 import { render } from "react-dom";
 import _ from "lodash";
 import { AppContainer } from 'react-hot-loader'
+
 
 
 import {
@@ -99,7 +101,7 @@ class WidgetWithCards extends React.Component {
 			function(data) {
 			
 				this.setState({
-					resultCount: data.resultCount + " result(s)"
+					resultCount: data.resultCount + " result(s...)"
 				});
 
 				var previousCard = this.state.allCards;
@@ -418,7 +420,10 @@ render(<AppContainer><App /></AppContainer>, document.getElementById('root'));
 
 
  if (process.env.NODE_ENV !== 'production') {
-     console.log('Looks like we are in development mode!');
+	 console.log('Looks like we are in development mode!');
+	
+	 
+	 
    }
 
 
