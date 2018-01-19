@@ -99,7 +99,7 @@ class WidgetWithCards extends React.Component {
 			function(data) {
 			
 				this.setState({
-					resultCount: data.resultCount + " result(s...)"
+					resultCount: data.resultCount + " result(s)"
 				});
 
 				var previousCard = this.state.allCards;
