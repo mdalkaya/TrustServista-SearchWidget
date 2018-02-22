@@ -7,6 +7,7 @@ import {
 	Card,
 	Image,
 	Modal,
+	Label,
 	Button,
 	Container
 } from "semantic-ui-react";
@@ -74,6 +75,45 @@ export class CardExpandable extends React.Component {
 		let thumbnail = null;
 		let mediaNode = null;
 		let iconNode = null;
+		let trustlevel = null;
+		let sentimentAnalysis = null;
+		
+		switch(true){ 
+			case (this.props.trustLevel < 40): 
+			trustlevel = (
+					<Label basic color='red'>{this.props.trustLevel}</Label>
+			);
+			break;
+			case (this.props.trustLevel < 70): 
+			trustlevel = (
+				<Label basic color='lightgrey'>{this.props.trustLevel}</Label>
+			);
+			break;
+			default:
+			trustlevel = (
+				<Label basic color='green'>{this.props.trustLevel}</Label>
+			);
+
+		}
+
+		switch(true){ 
+			case (this.props.sentiment == 'neu'): 
+			sentimentAnalysis = (
+					<Label basic ><Icon name='meh'/> neutral</Label>
+			);
+			break;
+			case (this.props.sentiment == 'neg'): 
+			sentimentAnalysis = (
+				<Label basic ><Icon name='frown'/> negative</Label>
+			);
+			break;
+			default:
+			sentimentAnalysis = (
+				<Label basic ><Icon name='smile'/> positive</Label>
+			);
+
+		}
+
 		if (this.props.iconName != "") {
 			iconNode = (
 				<Icon name={this.props.iconName} color={this.props.iconColor} />
@@ -157,7 +197,11 @@ export class CardExpandable extends React.Component {
 					/>
 					{iconNode}
 					<strong onClick={this.handleClick}>{this.props.title}</strong>
-					<Card.Meta dangerouslySetInnerHTML={{ __html: this.props.meta }} />
+					<Card.Meta>{trustlevel}{sentimentAnalysis}
+					<span className='source'>
+					{this.props.source}
+				  </span> </Card.Meta>
+					
 					<Card.Description
 						onClick={this.handleExpand}
 						style={{
